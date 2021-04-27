@@ -1,0 +1,30 @@
+# *** 楽天 API を呼び出し ***
+Web.InvokeWebService Url: $'''https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20170628?applicationId=%applicationID%&period=realtime&genreId=100026&format=xml''' Method: Web.Method.Get Accept: $'''application/xml''' ContentType: $'''application/xml''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False FailOnErrorStatus: False EncodeRequestBody: True UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False ResponseHeaders=> WebServiceResponseHeaders Response=> WebServiceResponse StatusCode=> StatusCode
+# *** Excel ファイルのタイトル行を出力 ***
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: $'''順位''' Column: 1 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''商品名''' Column: 2 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''キャッチコピー''' Column: 3 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''商品価格''' Column: 4 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''商品URL''' Column: 5 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''画像URL''' Column: 6 Row: 1
+# ** XPath を指定 ***
+XML.ExecuteXPath XmlDocument: WebServiceResponse XPathQuery: $'''/root/Items/Item''' XPathResults=> XPathResults
+# ** 取得データを Excel ファイルに出力 ***
+LOOP FOREACH CurrentItem IN XPathResults
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+    XML.GetElementValue Document: CurrentItem XPathQuery: $'''rank''' TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 1 Row: FirstFreeRow
+    XML.GetElementValue Document: CurrentItem XPathQuery: $'''itemName''' TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 2 Row: FirstFreeRow
+    XML.GetElementValue Document: CurrentItem XPathQuery: $'''catchcopy''' TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 3 Row: FirstFreeRow
+    XML.GetElementValue Document: CurrentItem XPathQuery: $'''itemPrice''' TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 4 Row: FirstFreeRow
+    XML.GetElementValue Document: CurrentItem XPathQuery: $'''itemUrl''' TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 5 Row: FirstFreeRow
+    XML.GetElementValue Document: CurrentItem XPathQuery: $'''smallImageUrls''' TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 6 Row: FirstFreeRow
+END
+# **  処理完了メッセージ表示 ***
+Display.ShowMessage Title: $'''楽天商品ランキング取得完了''' Message: $'''指定したジャンルの商品ランキングの取得が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
