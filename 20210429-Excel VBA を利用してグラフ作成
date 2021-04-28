@@ -1,0 +1,22 @@
+# *** 統計データダウンロード ***
+Web.DownloadToFile Url: $'''https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032086239&fileKind=0''' FilePath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Sample.xslx''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False DownloadedFile=> DownloadedFile
+# *** ダウンロード Excel 表編集 ***
+Excel.LaunchAndOpen Path: DownloadedFile Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.ActivateWorksheetByName Instance: ExcelInstance Name: $'''DB_MainC_Graph'''
+Excel.Advanced.DeleteRow Instance: ExcelInstance Index: 4
+Excel.Advanced.DeleteColumn Instance: ExcelInstance Column: 1
+Excel.Advanced.DeleteColumn Instance: ExcelInstance Column: 3
+Excel.Advanced.DeleteColumn Instance: ExcelInstance Column: 4
+# *** Excel VBA 作成 ***
+UIAutomation.SelectTab Tab: appmask['Window \'Sample  -  互換モード - Excel\'']['Tab Item \'開発\'']
+UIAutomation.FormFilling.PressButton Button: appmask['Window \'Sample  -  互換モード - Excel\'']['Button \'Visual Basic\'']
+UIAutomation.SelectMenuOption Control: appmask['Window \'Microsoft  ...  - Sample.xslx\'']['Menu Item \'挿入\'']
+UIAutomation.SelectMenuOption Control: appmask['Window \'Microsoft  ...  - Sample.xslx\'']['Menu Item \'標準モジュール\'']
+MouseAndKeyboard.SendKeys TextToSend: $'''Sub CrateGraph()
+    With Worksheets(\"DB_MainC_Graph\").ChartObjects _
+        .Add(230, 10, 600, 400).Chart
+        .SetSourceData Range(\"A5\").CurrentRegion
+        .ChartType = xlLine
+    End With''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+# *** マクロ実行 ***
+Excel.Advanced.RunMacro Instance: ExcelInstance Macro: $'''CrateGraph'''
