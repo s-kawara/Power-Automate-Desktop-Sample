@@ -1,1 +1,17 @@
-
+# *** 検索キーワード入力 ***
+Display.InputDialog Title: $'''一つ目の検索キーワードを入力''' Message: $'''一つ目の検索キーワードを入力して下さい。''' DefaultValue: $'''UiPath''' InputType: Display.InputType.SingleLine IsTopMost: True UserInput=> InpValue1 ButtonPressed=> ButtonPressed
+Display.InputDialog Title: $'''二つ目の検索キーワード入力''' Message: $'''二つ目の検索キーワードを入力して下さい。''' DefaultValue: $'''Power Automate Desktop''' InputType: Display.InputType.SingleLine IsTopMost: True UserInput=> InpValue2 ButtonPressed=> ButtonPressed2
+# *** Google Trends ページ表示 ***
+WebAutomation.LaunchEdge Url: $'''https://trends.google.co.jp/trends/explore?geo=JP&q=%InpValue1%,%InpValue2%''' WindowState: WebAutomation.BrowserWindowState.Minimized ClearCache: False ClearCookies: False BrowserInstance=> Browser
+# *** 検索結果を画像データで保存 ***
+WebAutomation.DataExtraction.TakeScreenshotSaveToFile BrowserInstance: Browser File: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\GoogleTrends.jpg''' FileFormat: WebAutomation.FileFormat.Jpg
+# *** アプリケーションで画像を表示 ***
+System.RunApplication ApplicationPath: $'''mspaint''' CommandLineArguments: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\GoogleTrends.jpg''' WindowStyle: System.ProcessWindowStyle.Normal ProcessId=> AppProcessId
+# *** アプリケーション終了まで待機 ***
+WAIT (System.ProcessToStop ProcessName: $'''mspaint''') 
+# *** ファイル削除 ***
+File.Delete Files: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\GoogleTrends.jpg'''
+# *** ブラウザーを閉じる ***
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+# *** 終了メッセージを表示 ***
+Display.ShowMessage Title: $'''キーワード比較処理完了''' Message: $'''入力されたキーワードでの比較処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed3
