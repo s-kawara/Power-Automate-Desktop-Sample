@@ -1,0 +1,16 @@
+# *** Excel ファイルを開く ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\SalesData.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+# *** 売上データ読み込み ***
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadCells Instance: ExcelInstance StartColumn: 1 StartRow: 1 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: False RangeValue=> SalesList
+SET intRow TO 5
+SET intColumn TO 1
+# *** データ出力処理(ループ処理の入れ子) ***
+LOOP FOREACH getRecord IN SalesList
+    LOOP FOREACH getItem IN getRecord
+        Excel.WriteCell Instance: ExcelInstance Value: getItem Column: intColumn Row: intRow
+        Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+    END
+    SET intRow TO 5
+    Variables.IncreaseVariable Value: intColumn IncrementValue: 1 IncreasedValue=> intColumn
+END
