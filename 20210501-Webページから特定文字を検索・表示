@@ -1,0 +1,23 @@
+# *** 検索ページ、URL 入力 ***
+Display.InputDialog Title: $'''検索する Web ページ入力''' Message: $'''検索を実行する Web ページの URL を入力して下さい。''' InputType: Display.InputType.SingleLine IsTopMost: True UserInput=> InpURL
+Display.InputDialog Title: $'''検索する文字列入力''' Message: $'''検索する文字列を入力して下さい。''' InputType: Display.InputType.SingleLine IsTopMost: True UserInput=> InpSearchString
+SET strCondition TO $'''%InpSearchString%.*'''
+# *** ページ情報ダウンロード ***
+Web.Download Url: InpURL ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False WebPageText=> getWebContent
+# *** テキスト解析実行 ***
+Text.RegexParse Text: getWebContent TextToFind: strCondition StartingPosition: 0 IgnoreCase: False OccurrencePositions=> Positions Matches=> Matches
+# *** Excel 起動・タイトル出力 ***
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: $'''文字列位置''' Column: 1 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''該当文字列''' Column: 2 Row: 1
+# *** 該当文字情報出力 ***
+SET intRow TO 0
+LOOP FOREACH CurrentItem IN Matches
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+    Excel.WriteCell Instance: ExcelInstance Value: Positions[intRow] Column: 1 Row: FirstFreeRow
+    Text.GetSubtextFromStartTo Text: CurrentItem NumberOfChars: 50 Subtext=> Subtext
+    Excel.WriteCell Instance: ExcelInstance Value: Subtext Column: 2 Row: FirstFreeRow
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+# *** 終了メッセージ表示 ***
+Display.ShowMessage Title: $'''検索処理完了''' Message: $'''検索する文字列の処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
