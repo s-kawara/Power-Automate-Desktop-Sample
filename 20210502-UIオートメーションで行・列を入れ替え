@@ -1,0 +1,11 @@
+# *** Excel ファイルを開く ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\SalesData.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+# *** 列・行を入れ替える範囲を選択 ***
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.Advanced.CopyCells Instance: ExcelInstance StartColumn: 1 StartRow: 1 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1
+# *** 行・列入れ替えコピー実行 ***
+UIAutomation.Click Element: appmask['Window \'SalesData - Excel\'']['Data Item \'\"A\" 6\''] ClickType: UIAutomation.ClickType.LeftClick MousePositionRelativeToElement: UIAutomation.RectangleEdgePoint.MiddleCenter OffsetX: 0 OffsetY: 0
+UIAutomation.Click Element: appmask['Window \'SalesData - Excel\'']['Menu Item \'その他のオプション\''] ClickType: UIAutomation.ClickType.LeftClick MousePositionRelativeToElement: UIAutomation.RectangleEdgePoint.MiddleCenter OffsetX: 0 OffsetY: 0
+UIAutomation.SelectMenuOption Control: appmask['Window \'SalesData - Excel\'']['Menu Item \'形式を選択して貼り付け...\'']
+UIAutomation.FormFilling.SetCheckboxState Checkbox: appmask['Window \'SalesData - Excel\'']['Check Box \'行/列の入れ替え(E)\''] CheckboxState: UIAutomation.CheckboxState.Checked
+UIAutomation.FormFilling.PressButton Button: appmask['Window \'SalesData - Excel\'']['Button \'OK\'']
