@@ -1,0 +1,12 @@
+# *** Excel 非表示で起動 ***
+Excel.Launch Visible: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+# *** タイトル出力 ***
+Excel.WriteCell Instance: ExcelInstance Value: $'''No''' Column: 1 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''メッセージ''' Column: 2 Row: 1
+# *** 繰り返し出力 ***
+LOOP LoopIndex FROM 1 TO 20 STEP 1
+    Excel.WriteCell Instance: ExcelInstance Value: LoopIndex Column: 1 Row: LoopIndex + 1
+    Excel.WriteCell Instance: ExcelInstance Value: $'''メッセージ & %LoopIndex%''' Column: 2 Row: LoopIndex + 1
+END
+# *** Excel 表示 ***
+UIAutomation.Windows.SetVisibilityByInstanceOrHandle WindowInstance: ExcelInstance Visibility: UIAutomation.Visibility.Visible
