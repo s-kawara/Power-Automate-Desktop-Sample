@@ -1,0 +1,20 @@
+# *** Web ページを開く ***
+WebAutomation.LaunchEdge Url: $'''https://www.post.japanpost.jp/send/deli_days/index.html''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False BrowserInstance=> Browser
+# *** Excel 起動・読み取り ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\注文一覧.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadCells Instance: ExcelInstance StartColumn: 1 StartRow: 1 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> ExcelData
+SET intRow TO 2
+# *** 配送予定日取得・出力 ***
+LOOP FOREACH CurrentItem IN ExcelData
+    WebAutomation.GoToWebPage BrowserInstance: Browser Url: $'''https://www.post.japanpost.jp/send/deli_days/index.html'''
+    WebAutomation.FormFilling.PopulateTextField BrowserInstance: Browser Control: appmask['Web Page \'h ... index.html\'']['<input:text> \'zip1\''] Text: $'''530-0027''' EmulateTyping: True UnfocusAfterPopulate: False
+    WebAutomation.FormFilling.PopulateTextField BrowserInstance: Browser Control: appmask['Web Page \'h ... index.html\'']['<input:text> \'zip2\''] Text: CurrentItem[1] EmulateTyping: True UnfocusAfterPopulate: False
+    WebAutomation.FormFilling.PressButton BrowserInstance: Browser Control: appmask['Web Page \'h ... index.html\'']['<input:submit> \'btnRed slim sizeFull\'']
+    WebAutomation.DataExtraction.GetDetailsOfElement BrowserInstance: Browser Control: appmask['Web Page \'https://www.post.japanpost.jp/cgi-deli/index.php\'']['<div> \'data\''] AttributeName: $'''Own Text''' AttributeValue=> AttributeValue
+    Excel.WriteCell Instance: ExcelInstance Value: AttributeValue Column: 5 Row: intRow
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+# *** 終了処理 ***
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+Display.ShowMessage Title: $'''配送予定日調査完了''' Message: $'''本日出荷予定の配送予定日の調査が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
