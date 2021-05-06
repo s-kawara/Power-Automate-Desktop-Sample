@@ -1,0 +1,27 @@
+# *** Web API で専門量販店販売統計情報取得 ***
+Web.InvokeWebService Url: $'''http://api.e-stat.go.jp/rest/3.0/app/getStatsData?appId=%applicationId%&lang=J&statsDataId=0003343979&metaGetFlg=Y&cntGetFlg=N&explanationGetFlg=Y&annotationGetFlg=Y&sectionHeaderFlg=1''' Method: Web.Method.Get Accept: $'''application/xml''' ContentType: $'''application/xml''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False FailOnErrorStatus: False EncodeRequestBody: True UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False ResponseHeaders=> WebServiceResponseHeaders Response=> WebServiceResponse StatusCode=> StatusCode
+# *** Excel 起動・初期化 ***
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: $'''都道府県名''' Column: 1 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''販売金額(百万円)''' Column: 2 Row: 1
+SET intRow TO 2
+# *** 都道府県情報取得 ***
+XML.ExecuteXPath XmlDocument: WebServiceResponse XPathQuery: $'''/GET_STATS_DATA/STATISTICAL_DATA/CLASS_INF/CLASS_OBJ[@name=\'都道府県\']/CLASS''' XPathResults=> XPathResults
+LOOP FOREACH CurrentItem IN XPathResults
+    XML.GetElementAttribute Document: CurrentItem AttributeName: $'''name''' TextValue=> XmlAttributeValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlAttributeValue Column: 1 Row: intRow
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+# *** 販売額情報取得 ***
+SET intRow TO 2
+XML.ExecuteXPath XmlDocument: WebServiceResponse XPathQuery: $'''/GET_STATS_DATA/STATISTICAL_DATA/DATA_INF/VALUE[@cat01=\'100\' and @time=\'2015000406\']''' XPathResults=> XPathResults
+LOOP FOREACH CurrentItem IN XPathResults
+    XML.GetElementValue Document: CurrentItem TextValue=> XmlElementValue
+    Excel.WriteCell Instance: ExcelInstance Value: XmlElementValue Column: 2 Row: intRow
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+# *** 3Dマップでグラフ表示 ***
+CALL Create3DGraph
+WAIT 5 
+Excel.Advanced.ActivateCell Instance: ExcelInstance Column: 4 Row: 6
+MouseAndKeyboard.SendKeys TextToSend: $'''{Control}({V})''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
