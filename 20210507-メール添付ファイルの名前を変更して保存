@@ -1,0 +1,17 @@
+# *** メールをタイトルでフィルター取得 ***
+Email.RetrieveAndSaveAttachments IMAPServer: Server Port: 993 EnableSSL: True Username: Account Password: PassWd AcceptUntrustedCertificates: True MailFolder: $'''INBOX''' MailsToRetrieve: Email.RetrieveMessagesMode.All MarkAsRead: True SubjectContains: $'''Attachment''' SaveAttachmentsInto: $'''C:\\Users\\kagen\\Desktop\\WorkFolder''' RetrievedEmails=> RetrievedEmails
+# *** メール一覧を繰り返し処理 ***
+Variables.CreateNewList List=> getBodyList
+LOOP FOREACH getMail IN RetrievedEmails
+    Text.Split Text: getMail.BodyText StandardDelimiter: Text.StandardDelimiter.NewLine DelimiterTimes: 1 Result=> getBodyList
+    LOOP FOREACH strBodyValue IN getBodyList
+        # *** ファイル名文字列判断 ***
+        IF Contains(strBodyValue, $'''ファイル名：''', False) THEN
+            # *** ファイル名文字列加工 ***
+            Text.Replace Text: strBodyValue TextToFind: $'''ファイル名：''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> convertFileName
+            # *** ファイル名変更 ***
+            File.Rename Files: getMail.Attachments[0] NewName: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\%convertFileName%''' KeepExtension: True IfFileExists: File.IfExists.DoNothing RenamedFiles=> RenamedFiles
+        END
+    END
+END
+Display.ShowMessage Title: $'''メール添付ファイル保存処理''' Message: $'''受信したメールの添付ファイルの保存処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
