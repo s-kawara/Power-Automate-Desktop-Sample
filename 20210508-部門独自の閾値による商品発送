@@ -1,0 +1,17 @@
+# *** Excel 起動 ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\StockList.xlsx''' Visible: True ReadOnly: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+# *** 在庫ファイルデータ取得 ***
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadCells Instance: ExcelInstance StartColumn: 3 StartRow: 4 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+SET strDisplay TO $'''商品名 - 在庫数'''
+# *** データ読み込み処理・閾値チェック ***
+LOOP FOREACH CurrentItem IN ExcelData
+    IF CurrentItem[4] < CurrentItem[6] THEN
+        Text.AppendLine Text: strDisplay LineToAppend: $'''%CurrentItem[1]% - %CurrentItem[4]%''' Result=> strDisplay
+    END
+END
+# *** メッセージ表示 ***
+Excel.Close Instance: ExcelInstance
+Display.ShowMessage Title: $'''在庫情報閾値チェック完了''' Message: $'''以下の商品が、閾値を下回っています。
+
+%strDisplay%''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
