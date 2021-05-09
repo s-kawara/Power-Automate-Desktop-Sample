@@ -1,0 +1,32 @@
+# *** メールをタイトルでフィルター取得 ***
+Email.Retrieve IMAPServer: Server Port: 993 EnableSSL: True Username: Account Password: PassWd AcceptUntrustedCertificates: True MailFolder: $'''INBOX''' MailsToRetrieve: Email.RetrieveMessagesMode.All MarkAsRead: True SubjectContains: $'''Paid Holiday''' RetrievedEmails=> RetrievedEmails
+# *** Excel起動 ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\従業員の勤務記録.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.ActivateWorksheetByName Instance: ExcelInstance Name: $'''従業員の休暇トラッカー'''
+# *** メール一覧を繰り返し処理 ***
+Variables.CreateNewList List=> getBodyList
+LOOP FOREACH CurrentItem IN RetrievedEmails
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+    Text.Split Text: CurrentItem.BodyText StandardDelimiter: Text.StandardDelimiter.NewLine DelimiterTimes: 1 Result=> getBodyList
+    LOOP FOREACH strBody IN getBodyList
+        IF Contains(strBody, $'''名前：''', False) THEN
+            Text.Replace Text: strBody TextToFind: $'''名前：''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> convertValue
+            Excel.WriteCell Instance: ExcelInstance Value: convertValue Column: 2 Row: FirstFreeRow
+        END
+        IF Contains(strBody, $'''開始日：''', False) THEN
+            Text.Replace Text: strBody TextToFind: $'''開始日：''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> convertValue
+            Excel.WriteCell Instance: ExcelInstance Value: convertValue Column: 3 Row: FirstFreeRow
+        END
+        IF Contains(strBody, $'''終了日：''', False) THEN
+            Text.Replace Text: strBody TextToFind: $'''終了日：''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> convertValue
+            Excel.WriteCell Instance: ExcelInstance Value: convertValue Column: 4 Row: FirstFreeRow
+        END
+        IF Contains(strBody, $'''種類：''', False) THEN
+            Text.Replace Text: strBody TextToFind: $'''種類：''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''%''%''' ActivateEscapeSequences: False Result=> convertValue
+            Excel.WriteCell Instance: ExcelInstance Value: convertValue Column: 5 Row: FirstFreeRow
+        END
+    END
+END
+# *** 終了処理 ***
+Excel.Save Instance: ExcelInstance
+Display.ShowMessage Title: $'''有給休暇申請処理完了''' Message: $'''有給休暇メール処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
