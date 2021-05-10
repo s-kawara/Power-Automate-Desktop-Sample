@@ -1,0 +1,23 @@
+# *** メール保存フォルダーを選択 ***
+Display.SelectFolder Description: $'''メール保存フォルダーを選択''' InitialDirectory: $'''C:\\Users\\kagen\\Desktop\\WorkFolder''' IsTopMost: True SelectedFolder=> SelectedFolder ButtonPressed=> ButtonPressed
+# *** ユーザー別フォルダー取得 ***
+Folder.GetSubfolders Folder: SelectedFolder FolderFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Subfolders=> Folders
+# *** Excel 起動・タイトル出力 ***
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: $'''フォルダー名''' Column: 1 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''容量(バイト)''' Column: 2 Row: 1
+# *** 取得フォルダー繰り返し処理 ***
+LOOP FOREACH getFolder IN Folders
+    Folder.GetFiles Folder: getFolder FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+    SET intFileSize TO 0
+    # *** 取得ファイル繰り返し処理 ***
+    LOOP FOREACH getFile IN Files
+        Variables.IncreaseVariable Value: intFileSize IncrementValue: getFile.Size IncreasedValue=> intFileSize
+    END
+    Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+    Excel.WriteCell Instance: ExcelInstance Value: getFolder.Name Column: 1 Row: FirstFreeRow
+    Excel.WriteCell Instance: ExcelInstance Value: intFileSize Column: 2 Row: FirstFreeRow
+END
+# *** 終了処理 ***
+Excel.SaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\ユーザー別容量一覧.xslx'''
+Display.ShowMessage Title: $'''ユーザ別フォルダー容量確認処理完了''' Message: $'''指定したフォルダーの容量取得処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
