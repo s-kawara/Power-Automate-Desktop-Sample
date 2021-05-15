@@ -1,0 +1,39 @@
+# *** 天気情報を取得 ***
+WebAutomation.LaunchEdge Url: $'''https://weathernews.jp/onebox/tenki/osaka/27127/''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False BrowserInstance=> Browser
+WebAutomation.DataExtraction.ExtractTable BrowserInstance: Browser Control: $'''html > body > article:eq(0) > article > section:eq(3) > div:eq(1) > div > div:eq(1) > div:eq(0) > div > div:eq(0) > div:eq(2) > div''' ExtractionParameters: {['p:eq(0)', 'Own Text', '', 'Value #1'], ['p:eq(2)', 'Own Text', '', 'Value #2'], ['p:eq(3)', 'Own Text', '', 'Value #3'], ['p:eq(4)', 'Own Text', '', 'Value #4'] } ExtractedData=> DataFromWebPage
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+# *** Excel Online 起動・準備 ***
+WebAutomation.LaunchEdge Url: OnlineExcel WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False BrowserInstance=> Browser
+MouseAndKeyboard.SendKeys TextToSend: $'''{Control}{A}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 5 
+MouseAndKeyboard.SendKeys TextToSend: $'''{Delete}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 5 
+MouseAndKeyboard.SendKeys TextToSend: $'''{Up}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 5 
+MouseAndKeyboard.SendKeys TextToSend: $'''{Control}{Home}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+MouseAndKeyboard.SendKeys TextToSend: $'''時刻{Right}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+MouseAndKeyboard.SendKeys TextToSend: $'''降水量{Right}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+MouseAndKeyboard.SendKeys TextToSend: $'''気温{Right}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+MouseAndKeyboard.SendKeys TextToSend: $'''風{Left}{Left}{Left}{Down}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 5 
+# *** 天気情報出力 ***
+LOOP FOREACH CurrentItem IN DataFromWebPage
+    MouseAndKeyboard.SendKeys TextToSend: $'''%CurrentItem[0]%{Right}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+    MouseAndKeyboard.SendKeys TextToSend: $'''%CurrentItem[1]%{Right}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+    MouseAndKeyboard.SendKeys TextToSend: $'''%CurrentItem[2]%{Right}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+    Text.Replace Text: CurrentItem[3] TextToFind: $'''\\n''' IsRegEx: True IgnoreCase: False ReplaceWith: $'''%' '%''' ActivateEscapeSequences: False Result=> Replaced
+    MouseAndKeyboard.SendKeys TextToSend: $'''%Replaced%{Left}{Left}{Left}{Down}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+END
+# *** 終了処理 ***
+MouseAndKeyboard.SendKeys TextToSend: $'''{Control}{Home}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 3 
+MouseAndKeyboard.SendKeys TextToSend: $'''{Alt}{LWin}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 3 
+MouseAndKeyboard.SendKeys TextToSend: $'''{N}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 3 
+MouseAndKeyboard.SendKeys TextToSend: $'''{T}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 3 
+MouseAndKeyboard.SendKeys TextToSend: $'''{Return}''' DelayBetweenKeystrokes: 10 SendTextAsHardwareKeys: False
+WAIT 3 
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+Display.ShowMessage Title: $'''天気情報処理完了''' Message: $'''本日の大阪の天気予報取得処理完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
