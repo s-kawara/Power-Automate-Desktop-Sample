@@ -1,0 +1,8 @@
+WebAutomation.LaunchEdge Url: URL WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False BrowserInstance=> Browser
+WebAutomation.DataExtraction.ExtractTable BrowserInstance: Browser Control: $'''html > body > div:eq(0) > div:eq(1) > div > div > div:eq(1) > main > div > div''' ExtractionParameters: {['div > div:eq(1) > div:eq(0) > div:eq(0) > a', 'Own Text', '', 'Value #1'], ['div > div:eq(1) > div:eq(0) > div:eq(0) > a', 'Href', '', 'Value #2'] } ExtractedData=> DataFromWebPage
+LOOP FOREACH CurrentItem IN DataFromWebPage
+    SET strNextPage TO CurrentItem[1]
+    WebAutomation.GoToWebPage BrowserInstance: Browser Url: strNextPage
+    WAIT 1 
+END
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
