@@ -1,0 +1,17 @@
+# *** データ取得・保存 ***
+Web.DownloadToFile Url: URL FilePath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Download.csv''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False DownloadedFile=> DownloadedFile
+File.ReadCSV CSVFile: DownloadedFile Encoding: File.CSVEncoding.UTF8 TrimFields: True FirstLineContainsColumnNames: False ColumnsSeparator: File.CSVColumnsSeparator.SystemDefault CSVTable=> CSVTable
+# *** テンプレートファイル読み込み ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\SurveyMeat.xlsx''' Visible: True ReadOnly: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+# *** 月収別商品金額作成 ***
+LOOP FOREACH CurrentItem IN CSVTable
+    IF CurrentItem[0] = $'''01-2019''' THEN
+        Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+        Excel.WriteCell Instance: ExcelInstance Value: CurrentItem[9] Column: 1 Row: FirstFreeRow
+        Excel.WriteCell Instance: ExcelInstance Value: CurrentItem[15] Column: 2 Row: FirstFreeRow
+    END
+END
+# *** ファイル保存処理 ***
+DateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateOnly CurrentDateTime=> CurrentDateTime
+Text.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyymmdd''' Result=> FormattedDateTime
+Excel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\%FormattedDateTime%.xlsx'''
