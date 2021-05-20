@@ -1,0 +1,16 @@
+# *** 分析データ取得・ダウンロード ***
+Web.DownloadToFile Url: $'''https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032086986&fileKind=1''' FilePath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\GetSurvey.csv''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False DownloadedFile=> DownloadedFile
+# *** 必要データ取得 ***
+Excel.LaunchAndOpen Path: DownloadedFile Visible: True ReadOnly: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.ReadCells Instance: ExcelInstance StartColumn: 3 StartRow: 8 EndColumn: 11 EndRow: 8 ReadAsText: False FirstLineIsHeader: False RangeValue=> WeekDays
+Excel.ReadCells Instance: ExcelInstance StartColumn: 12 StartRow: 8 EndColumn: 20 EndRow: 8 ReadAsText: False FirstLineIsHeader: False RangeValue=> Holidays
+Excel.Close Instance: ExcelInstance
+# *** テンプレートエクセル起動・取得データ保存 ***
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\SurveyWatchTVTemplate.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: WeekDays Column: 2 Row: 2
+Excel.WriteCell Instance: ExcelInstance Value: Holidays Column: 2 Row: 3
+# *** 終了処理 ***
+DateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateOnly CurrentDateTime=> CurrentDateTime
+Text.FromCustomDateTime DateTime: CurrentDateTime CustomFormat: $'''yyyymmdd''' Result=> FormattedDateTime
+Excel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\%FormattedDateTime%.xlsx'''
+Display.ShowMessage Title: $'''分析資料作成完了''' Message: $'''ダウンロードしたエクセルファイルから必要な情報を取得し資料作成が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
