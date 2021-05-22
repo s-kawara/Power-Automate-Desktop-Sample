@@ -1,0 +1,2 @@
+Display.InputDialog Title: $'''名前を入力''' Message: $'''名前を入力して下さい。''' InputType: Display.InputType.SingleLine IsTopMost: False UserInput=> UserInput ButtonPressed=> ButtonPressed
+Display.ShowMessage Title: $'''Hello Desktop メッセージ''' Message: $'''こんにちは、 %UserInput% さん、 Hello Desktop の世界へようこそ！''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False ButtonPressed=> ButtonPressed2
