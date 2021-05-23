@@ -1,0 +1,6 @@
+Email.Retrieve IMAPServer: Server Port: 993 EnableSSL: True Username: Account Password: PassWd AcceptUntrustedCertificates: True MailFolder: $'''INBOX''' MailsToRetrieve: Email.RetrieveMessagesMode.Unread MarkAsRead: True SubjectContains: $'''Sample Mail''' RetrievedEmails=> RetrievedEmails
+LOOP FOREACH CurrentItem IN RetrievedEmails
+    Display.ShowMessage Title: $'''受信メール''' Message: $'''受信メール数：%RetrievedEmails.Count%
+受信メール本文
+%CurrentItem.BodyText%''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
+END
