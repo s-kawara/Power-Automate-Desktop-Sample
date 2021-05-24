@@ -1,0 +1,6 @@
+WebAutomation.LaunchEdge Url: $'''https://www.google.co.jp/search?q=Power+Automate+Desktop&source=hp&ei=tGCrYN-oD9fahwO42piwCw&iflsig=AINFCbYAAAAAYKtuxL0GuiftFaOasRTTAMCwWVCNPuv_&oq=Power+Automate+Desktop&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAELEDMgIIADICCAAyAggAMgIIADICCAAyAggAMgIIADoKCAAQsQMQgwEQBDoICAAQsQMQgwE6BwgAELEDEAQ6BAgAEARQ7g5Yii9g4DFoAXAAeACAAdQBiAH4EpIBBzExLjEwLjGYAQCgAQGqAQdnd3Mtd2l6sAEA&sclient=gws-wiz&ved=0ahUKEwjf0tmi8OHwAhVX7WEKHTgtBrYQ4dUDCAk&uact=5''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False BrowserInstance=> Browser
+WebAutomation.ExecuteJavascript BrowserInstance: Browser Javascript: $'''function ExecuteScript() { 
+document.body.style.backgroundColor = \"red\";
+document.f.q.value = \"Power Apps\";
+document.f.submit();
+}''' Result=> Result
