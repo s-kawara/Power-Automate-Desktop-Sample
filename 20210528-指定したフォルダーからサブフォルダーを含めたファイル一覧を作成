@@ -1,0 +1,19 @@
+Display.SelectFolder Description: $'''サブフォルダー一覧を取得するフォルダーを選択''' IsTopMost: True SelectedFolder=> SelectedFolder ButtonPressed=> ButtonPressed
+Folder.GetSubfolders Folder: SelectedFolder FolderFilter: $'''*''' IncludeSubfolders: True FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Subfolders=> Folders
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: $'''フォルダー名''' Column: 1 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''ファイル名''' Column: 2 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''サイズ''' Column: 3 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''作成日''' Column: 4 Row: 1
+Excel.WriteCell Instance: ExcelInstance Value: $'''更新日''' Column: 5 Row: 1
+LOOP FOREACH CurrentItem IN Folders
+    Folder.GetFiles Folder: CurrentItem.FullName FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+    LOOP FOREACH getFile IN Files
+        Excel.Advanced.GetFirstFreeRowOnColumn Instance: ExcelInstance Column: 1 FirstFreeRowOnColumn=> FirstFreeRowOnColumn
+        Excel.WriteCell Instance: ExcelInstance Value: getFile.Directory Column: 1 Row: FirstFreeRowOnColumn
+        Excel.WriteCell Instance: ExcelInstance Value: getFile.Name Column: 2 Row: FirstFreeRowOnColumn
+        Excel.WriteCell Instance: ExcelInstance Value: getFile.Size Column: 3 Row: FirstFreeRowOnColumn
+        Excel.WriteCell Instance: ExcelInstance Value: getFile.CreationTime Column: 4 Row: FirstFreeRowOnColumn
+        Excel.WriteCell Instance: ExcelInstance Value: getFile.LastModified Column: 5 Row: FirstFreeRowOnColumn
+    END
+END
