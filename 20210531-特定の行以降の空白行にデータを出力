@@ -1,0 +1,14 @@
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Osaka_Sales.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadCells Instance: ExcelInstance StartColumn: 1 StartRow: 1 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> OsakaSalesData
+Excel.Close Instance: ExcelInstance
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\SalesOrder.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> WriteExcel
+SET intRow TO 3
+LOOP LoopIndex FROM 1 TO 2 STEP 0
+    Excel.ReadCell Instance: WriteExcel StartColumn: 1 StartRow: intRow ReadAsText: False CellValue=> ExcelData
+    IF IsEmpty(ExcelData) THEN
+        EXIT LOOP
+    END
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+Excel.WriteCell Instance: WriteExcel Value: OsakaSalesData Column: 1 Row: intRow
