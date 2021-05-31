@@ -1,0 +1,17 @@
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+UIAutomation.Windows.ResizeByTitleClass Title: $'''Book1 - Excel''' Class: $'''XLMAIN''' Width: 800 Height: 800
+UIAutomation.Windows.MoveByTitleClass Title: $'''Book1 - Excel''' Class: $'''XLMAIN''' X: 425 Y: 180
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance2
+UIAutomation.Windows.ResizeByTitleClass Title: $'''Book2 - Excel''' Class: $'''XLMAIN''' Width: 800 Height: 800
+UIAutomation.Windows.MoveByTitleClass Title: $'''Book2 - Excel''' Class: $'''XLMAIN''' X: 1080 Y: 180
+UIAutomation.Windows.FocusByTitleClass Title: $'''Book1 - Excel''' Class: $'''XLMAIN'''
+UIAutomation.Windows.FocusByTitleClass Title: $'''Book2 - Excel''' Class: $'''XLMAIN'''
+LOOP LoopIndex FROM 1 TO 10 STEP 1
+    Excel.WriteCell Instance: ExcelInstance Value: LoopIndex Column: 1 Row: LoopIndex
+END
+LOOP LoopIndex2 FROM 1 TO 10 STEP 1
+    Excel.WriteCell Instance: ExcelInstance2 Value: LoopIndex2 Column: 1 Row: LoopIndex2
+END
+LOOP LoopIndex3 FROM 1 TO 10 STEP 1
+    Excel.WriteCell Instance: ExcelInstance Value: LoopIndex3 Column: 2 Row: LoopIndex3
+END
