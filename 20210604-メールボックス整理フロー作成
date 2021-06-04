@@ -1,0 +1,7 @@
+Email.Retrieve IMAPServer: $'''outlook.office365.com''' Port: 993 EnableSSL: True Username: Account Password: PassWd AcceptUntrustedCertificates: True MailFolder: $'''INBOX''' MailsToRetrieve: Email.RetrieveMessagesMode.All MarkAsRead: True RetrievedEmails=> RetrievedEmails
+LOOP FOREACH CurrentItem IN RetrievedEmails
+    IF CurrentItem.Date.Year <= 2016 THEN
+        Email.Delete IMAPServer: $'''outlook.office365.com''' Port: 993 EnableSSL: True Username: Account Password: PassWd AcceptUntrustedCertificates: True EmailsToProcess: CurrentItem
+    END
+END
+Display.ShowMessage Title: $'''メールボックス整理''' Message: $'''不要メールの削除が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
