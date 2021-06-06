@@ -1,0 +1,5 @@
+OCR.CreateTesseractEngine Language: OCR.TesseractLanguage.English ImageWidthMultiplier: 1 ImageHeightMultiplier: 1 TesseractEngine=> OCREngine
+UIAutomation.Windows.FocusByTitleClass Title: $'''タイトルなし - ペイント''' Class: $'''MSPaintApp'''
+OCR.ExtractTextFromForegroundWindow OCREngine: OCREngine OcrText=> OcrText
+Display.ShowMessage Title: $'''OCR読み取り結果''' Message: $'''OCRエンジンで読み取り結果は以下の通りです。
+%OcrText%''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
