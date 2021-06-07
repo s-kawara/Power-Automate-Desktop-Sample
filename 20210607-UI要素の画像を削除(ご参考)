@@ -1,0 +1,315 @@
+WebAutomation.LaunchEdge Url: $'''https://powerapps.microsoft.com/ja-jp/''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False Timeout: 60 BrowserInstance=> Browser
+WebAutomation.DataExtraction.GetDetailsOfElement BrowserInstance: Browser Control: appmask['Web Page \'https://powerapps.microsoft.com/ja-jp/\'']['<h1> \'text-heading-xl column medium-8 medium-centered\''] AttributeName: $'''Own Text''' AttributeValue=> AttributeValue
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+Display.ShowMessage Title: $'''Webページから取得''' Message: AttributeValue Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
+
+# [ControlRepository][PowerAutomateDesktop]
+{
+  "ApplicationInfo": {
+    "Name": "ClipboardControlRepository",
+    "Version": "1.0"
+  },
+  "Screens": [
+    {
+      "Controls": [
+        {
+          "AutomationProtocol": "uia3",
+          "ScreenShot": null,
+          "InstanceId": "b632e6d1-7b1a-475c-80f9-78aa985bde25",
+          "ElementTypeName": "<h1>",
+          "Name": "<h1> 'text-heading-xl column medium-8 medium-centered'",
+          "SelectorCount": 1,
+          "Selectors": [
+            {
+              "CustomSelector": null,
+              "Elements": [
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": true,
+                  "Name": "<body> 'Skip to main content Power Apps 製品 価格 パートナー 学ぶ サポート  ...  Apps をフォローする プライバシーと Cookie 使用条件 商標 日本語 お問い合わせ '",
+                  "Tag": "body"
+                },
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": "container homepage"
+                    },
+                    {
+                      "Ignore": false,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": "mainContent"
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": false,
+                  "Name": "<div> 'mainContent'",
+                  "Tag": "div"
+                },
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": false,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": "section hero"
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": false,
+                  "Name": "<section> 'section hero'",
+                  "Tag": "section"
+                },
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": false,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": "hero-copy"
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": false,
+                  "Name": "<div> 'hero-copy'",
+                  "Tag": "div"
+                },
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": false,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": "row column text-center"
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": false,
+                  "Name": "<div> 'row column text-center'",
+                  "Tag": "div"
+                },
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": false,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": "row"
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": false,
+                  "Name": "<div> 'row'",
+                  "Tag": "div"
+                },
+                {
+                  "Attributes": [
+                    {
+                      "Ignore": false,
+                      "IsOrdinal": false,
+                      "Name": "Class",
+                      "Operation": "EqualTo",
+                      "Value": "text-heading-xl column medium-8 medium-centered"
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Id",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": true,
+                      "Name": "Ordinal",
+                      "Operation": "EqualTo",
+                      "Value": -1
+                    },
+                    {
+                      "Ignore": true,
+                      "IsOrdinal": false,
+                      "Name": "Title",
+                      "Operation": "EqualTo",
+                      "Value": null
+                    }
+                  ],
+                  "CustomValue": null,
+                  "Ignore": false,
+                  "Name": "<h1> 'text-heading-xl column medium-8 medium-centered'",
+                  "Tag": "h1"
+                }
+              ],
+              "Ignore": false,
+              "IsCustom": false,
+              "IsWindowsInstance": false,
+              "Order": 0
+            }
+          ],
+          "Tag": "h1"
+        }
+      ],
+      "ScreenShot": null,
+      "InstanceId": "3663db9b-90d3-4cdb-b815-97d756bb386b",
+      "ElementTypeName": "Web Page",
+      "Name": "Web Page 'https://powerapps.microsoft.com/ja-jp/'",
+      "SelectorCount": 1,
+      "Selectors": [
+        {
+          "CustomSelector": null,
+          "Elements": [
+            {
+              "Attributes": [],
+              "CustomValue": "domcontainer",
+              "Ignore": false,
+              "Name": "Web Page 'https://powerapps.microsoft.com/ja-jp/'",
+              "Tag": "domcontainer"
+            }
+          ],
+          "Ignore": false,
+          "IsCustom": false,
+          "IsWindowsInstance": false,
+          "Order": 0
+        }
+      ],
+      "Tag": "domcontainer"
+    }
+  ],
+  "Version": 1
+}
