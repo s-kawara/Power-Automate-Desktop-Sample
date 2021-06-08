@@ -1,0 +1,4 @@
+WebAutomation.LaunchEdge Url: $'''https://docs.microsoft.com/ja-jp/learn/browse/?expanded=power-platform&products=power-apps&source=learn&hideCompleted=true''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False Timeout: 60 BrowserInstance=> Browser
+WebAutomation.DataExtraction.ExtractTableInExcel BrowserInstance: Browser Control: $'''html > body > div:eq(1) > div > section > div > div > main > section > div > div > div:eq(1) > ul > li''' ExtractionParameters: {['article > div:eq(1) > a > h3', 'Own Text', '', 'Value #1'], ['article > div:eq(2) > div:eq(0) > span', 'Own Text', '', 'Value #2'], ['article > div:eq(1) > a', 'Href', '', 'Value #3'] } ExcelInstance=> ExcelInstance
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+Excel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\MSLearn.xlsx'''
