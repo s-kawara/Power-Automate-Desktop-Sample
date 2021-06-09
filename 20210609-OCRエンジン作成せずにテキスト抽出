@@ -1,0 +1,5 @@
+WebAutomation.LaunchEdge Url: $'''https://docs.microsoft.com/en-us/learn/certifications/exams/mb-320''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False Timeout: 60 BrowserInstance=> Browser
+WebAutomation.DataExtraction.TakeScreenshotSaveToFile BrowserInstance: Browser File: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Download.bmp''' FileFormat: WebAutomation.FileFormat.Bmp
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+OCR.ExtractTextFromFileWithTesseract ImageFile: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Download.bmp''' Language: OCR.TesseractLanguage.English ImageWidthMultiplier: 1 ImageHeightMultiplier: 1 OcrText=> OcrText
+Display.ShowMessage Title: $'''OCR抽出結果''' Message: OcrText Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
