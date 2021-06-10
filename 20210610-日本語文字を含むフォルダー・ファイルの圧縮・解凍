@@ -1,0 +1,6 @@
+Folder.GetFiles Folder: $'''C:\\Users\\kagen\\Desktop\\WorkFolder''' FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> Files
+LOOP FOREACH CurrentItem IN Files
+    Compression.ZipFiles ArchivePath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\圧縮ファイル\\Compress.zip''' FilesOrFoldersToZip: CurrentItem.FullName CompressionLevel: Compression.CompressionLevel.BestBalanceOfSpeedAndCompression ArchiveComment: $'''''' ZipFile=> ZipFile
+END
+Compression.UnzipFiles ArchivePath: ZipFile DestinationFolder: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\解凍ファイル'''
+Display.ShowMessage Title: $'''圧縮・解凍処理完了''' Message: $'''フィルの圧縮・解凍処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
