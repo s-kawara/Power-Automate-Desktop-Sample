@@ -1,0 +1,11 @@
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\sample.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadCells Instance: ExcelInstance StartColumn: 1 StartRow: 1 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> ExcelData
+SET intRow TO 2
+LOOP FOREACH CurrentItem IN ExcelData
+    Text.Replace Text: CurrentItem[2] TextToFind: $'''マ''' IsRegEx: False IgnoreCase: False ReplaceWith: $'''〇''' ActivateEscapeSequences: False Result=> Replaced
+    Excel.WriteCell Instance: ExcelInstance Value: Replaced Column: 3 Row: intRow
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+Excel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Convert.xlsx'''
+Display.ShowMessage Title: $'''置換処理''' Message: $'''エクセルの文字列置換処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
