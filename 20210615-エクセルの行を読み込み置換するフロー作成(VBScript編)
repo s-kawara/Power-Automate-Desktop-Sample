@@ -1,0 +1,13 @@
+Display.SelectFile Title: $'''変換するファイルを指定''' IsTopMost: True CheckIfFileExists: False SelectedFile=> SelectedFile ButtonPressed=> ButtonPressed
+System.RunVBScript VBScriptCode: $'''Set objExcel = CreateObject(\"Excel.Application\")
+Set objWorkbook = objExcel.Workbooks.Open(\"%SelectedFile%\")
+
+objExcel.Application.Visible = True
+
+objExcel.Cells.Replace \"マ\",\"〇\"
+
+objExcel.ActiveWorkbook.SaveAs \"%SelectedFile.Directory%\\Convert.xlsx\"
+objExcel.ActiveWorkbook.Close
+
+objExcel.Quit''' ScriptOutput=> VBScriptOutput ScriptError=> ScriptError
+Display.ShowMessage Title: $'''ファイル変換完了''' Message: $'''指定されたエクセルファイルの変換処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed2
