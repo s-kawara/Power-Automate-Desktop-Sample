@@ -1,0 +1,17 @@
+Display.SelectFile Title: $'''パスワード設定ファイル指定''' IsTopMost: True CheckIfFileExists: False SelectedFile=> SelectedFile ButtonPressed=> ButtonPressed
+Display.InputDialog Title: $'''設定するパスワード指定''' Message: $'''ファイルに設定するパスワードを入力して下さい。''' InputType: Display.InputType.SingleLine IsTopMost: True UserInput=> UserInput ButtonPressed=> ButtonPressed2
+System.RunVBScript VBScriptCode: $'''Set objExcel = CreateObject(\"Excel.Application\")
+Set objWorkbook = objExcel.Workbooks.Open(\"%SelectedFile%\")
+
+objExcel.Application.Visible = True
+objExcel.Application.DisplayAlerts = False
+
+objExcel.ActiveWorkbook.SaveAs \"%SelectedFile%\",,\"%UserInput%\"
+
+objExcel.Application.DisplayAlerts = True
+
+objExcel.ActiveWorkbook.Close
+ObjExcel.Quit
+''' ScriptOutput=> VBScriptOutput ScriptError=> ScriptError
+Display.ShowMessage Title: $'''パスワード設定完了''' Message: $'''設定したパスワードでファイルを保存しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed3
+Excel.LaunchAndOpen Path: SelectedFile Visible: True Password: UserInput ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
