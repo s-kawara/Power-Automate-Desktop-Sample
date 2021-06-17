@@ -1,0 +1,33 @@
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Only_Little_Dog.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.GetFirstFreeColumnRow Instance: ExcelInstance FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+Excel.ReadCells Instance: ExcelInstance StartColumn: 1 StartRow: 1 EndColumn: FirstFreeColumn - 1 EndRow: FirstFreeRow - 1 ReadAsText: False FirstLineIsHeader: True RangeValue=> ExcelData
+SET intRow TO 2
+WebAutomation.LaunchEdge Url: $'''https://travel.rakuten.co.jp/''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False Timeout: 60 BrowserInstance=> Browser
+LOOP FOREACH CurrentItem IN ExcelData
+    SET bolLittleDoc TO $'''False'''
+    WebAutomation.GoToWebPage BrowserInstance: Browser Url: CurrentItem[0]
+    WebAutomation.DataExtraction.ExtractList BrowserInstance: Browser Control: $'''html > body > div:eq(3) > div > div:eq(3) > div:eq(1) > div > div > div > ul > li:eq(0) > dl > dd > ul > li''' ExtractionParameters: {['', 'data-locate', ''] } ExtractedData=> DataFromWebPage
+    IF DataFromWebPage[0] = $'''pet-type-ok''' THEN
+        IF DataFromWebPage[1] = $'''pet-type-ng''' THEN
+            IF DataFromWebPage[2] = $'''pet-type-ng''' THEN
+                IF DataFromWebPage[3] = $'''pet-type-ng''' THEN
+                    IF DataFromWebPage[4] = $'''pet-type-ng''' THEN
+                        IF DataFromWebPage[5] = $'''pet-type-ng''' THEN
+                            SET bolLittleDoc TO $'''True'''
+                        END
+                    END
+                END
+            END
+        END
+    END
+    IF bolLittleDoc = $'''True''' THEN
+        Excel.WriteCell Instance: ExcelInstance Value: $'''〇''' Column: 2 Row: intRow
+    ELSE
+        Excel.WriteCell Instance: ExcelInstance Value: $'''×''' Column: 2 Row: intRow
+    END
+    WAIT 1 
+    Variables.IncreaseVariable Value: intRow IncrementValue: 1 IncreasedValue=> intRow
+END
+WebAutomation.CloseWebBrowser BrowserInstance: Browser
+Excel.CloseAndSave Instance: ExcelInstance
+Display.ShowMessage Title: $'''詳細ページチェック完了''' Message: $'''エクセルシートのデータのチェック処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
