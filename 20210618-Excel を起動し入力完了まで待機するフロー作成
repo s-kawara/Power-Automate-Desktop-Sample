@@ -1,0 +1,6 @@
+Excel.LaunchAndOpen Path: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\StockList.xlsx''' Visible: True ReadOnly: False LoadAddInsAndMacros: False Instance=> ExcelInstance
+UIAutomation.Windows.FocusByTitleClass Title: $'''StockList - Excel''' Class: $'''XLMAIN'''
+WAIT (UIAutomation.Windows.ToLoseFocusByTitleClass Title: $'''StockList - Excel''' Class: $'''XLMAIN''') 
+Excel.Read Instance: ExcelInstance ReadAsText: False FirstLineIsHeader: False RangeValue=> ExcelData
+Excel.CloseAndSave Instance: ExcelInstance
+Display.ShowMessage Title: $'''新規入力データ''' Message: ExcelData Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
