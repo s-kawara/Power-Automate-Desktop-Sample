@@ -1,0 +1,6 @@
+WebAutomation.LaunchEdge Url: $'''https://interview.interpresident.jp/tokai/''' WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False Timeout: 60 BrowserInstance=> Browser
+WebAutomation.DataExtraction.ExtractTable BrowserInstance: Browser Control: $'''html > body > main > section:eq(2) > div > article''' ExtractionParameters: {[$'''header > a > h4''', $'''Own Text''', $'''''', $'''Value #1'''], [$'''h6:eq(0)''', $'''Own Text''', $'''''', $'''Value #2'''], [$'''h6:eq(1)''', $'''Own Text''', $'''''', $'''Value #3'''], [$'''header > a''', $'''Href''', $'''''', $'''Value #4'''] } ExtractedData=> DataFromWebPage
+LOOP FOREACH CurrentItem IN DataFromWebPage
+    WebAutomation.GoToWebPage BrowserInstance: Browser Url: CurrentItem[3]
+    WAIT 1 
+END
