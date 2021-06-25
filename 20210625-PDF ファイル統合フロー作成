@@ -1,0 +1,17 @@
+Display.SelectFolder Description: $'''マスターフォルダーを選択''' InitialDirectory: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\MasterFolder''' IsTopMost: True SelectedFolder=> MasterFolder
+Display.SelectFolder Description: $'''チェックフォルダーを選択''' InitialDirectory: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\CheckFolder''' IsTopMost: True SelectedFolder=> CheckFolder
+Folder.GetFiles Folder: MasterFolder FileFilter: $'''*''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> MasterFiles
+LOOP FOREACH MasterFile IN MasterFiles
+    Text.GetSubtextFromStartTo Text: MasterFile.Name NumberOfChars: 4 Subtext=> MasterKeyString
+    Folder.GetFiles Folder: CheckFolder FileFilter: $'''%MasterKeyString%*.pdf''' IncludeSubfolders: False FailOnAccessDenied: True SortBy1: Folder.SortBy.NoSort SortDescending1: False SortBy2: Folder.SortBy.NoSort SortDescending2: False SortBy3: Folder.SortBy.NoSort SortDescending3: False Files=> CheckFiles
+    IF CheckFiles.Count > 0 THEN
+        SET PdfList TO $'''\"%MasterFile%\"'''
+        LOOP FOREACH CheckFile IN CheckFiles
+            SET PdfList TO $'''%PdfList% , \"%CheckFile%\"'''
+        END
+        Pdf.MergeFiles PDFFiles: PdfList MergedPDFPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\MargeFolder\\%MasterFile.Name%''' IfFileExists: Pdf.IfFileExists.Overwrite PasswordDelimiter: $''',''' MergedPDF=> MergedPDF
+        WAIT 1 
+        File.Delete Files: MasterFile
+    END
+END
+Display.ShowMessage Title: $'''PDFファイル統合処理完了''' Message: $'''指定したフォルダーの PDF ファイル統合処理が完了しました。''' Icon: Display.Icon.Information Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
