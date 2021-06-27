@@ -1,0 +1,5 @@
+Web.Download Url: $'''https://www.bing.com/images/search?q=power+Automate&form=HDRSC3&first=1&tsc=ImageBasicHover''' ConnectionTimeout: 30 FollowRedirection: True ClearCookies: False UserAgent: $'''Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.21) Gecko/20100312 Firefox/3.6''' Encoding: Web.Encoding.AutoDetect AcceptUntrustedCertificates: False WebPageText=> WebPageText
+Text.RegexParse Text: WebPageText TextToFind: $'''<img.*?src\\s*=\\s*[\\\"|\\\']http.*?[\\\"|\\\'].*?>''' StartingPosition: 0 IgnoreCase: False OccurrencePositions=> Positions Matches=> Matches
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: Matches Column: 1 Row: 1
+Excel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\kagen\\Desktop\\WorkFolder\\Sample.xlsx'''
