@@ -1,0 +1,5 @@
+WebAutomation.LaunchEdge Url: URL WindowState: WebAutomation.BrowserWindowState.Normal ClearCache: False ClearCookies: False Timeout: 60 BrowserInstance=> Browser
+WebAutomation.DataExtraction.ExtractTable BrowserInstance: Browser Control: $'''html > body > div:eq(0) > div > div > div:eq(0) > div:eq(2) > div:eq(2) > div > div:eq(1) > div:eq(1) > div:eq(1) > div:eq(1) > div:eq(0) > div > div > div > div > div > div:eq(2) > div > div > div > div > div:eq(1) > div > div > div > div > div > div''' ExtractionParameters: {[$'''div > div > div > div:eq(1) > div:eq(1)''', $'''Own Text''', $'''''', $'''Value #1'''], [$'''div > div > div > div:eq(1) > div:eq(2)''', $'''Own Text''', $'''''', $'''Value #2'''], [$'''div > div > div > div:eq(1) > div:eq(3)''', $'''Own Text''', $'''''', $'''Value #3'''] } ExtractedData=> DataFromWebPage
+Excel.Launch Visible: True LoadAddInsAndMacros: False Instance=> ExcelInstance
+Excel.WriteCell Instance: ExcelInstance Value: DataFromWebPage Column: 1 Row: 1
+Excel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''C:\\Users\\Shinichi\\Desktop\\動画\\TeasmFile.xlsx'''
